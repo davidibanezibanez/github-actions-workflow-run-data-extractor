@@ -1,124 +1,137 @@
 # GitHub Actions Workflow Run Data Extractor
 
-Este proyecto permite **extraer, organizar y almacenar automáticamente información detallada** sobre las ejecuciones de GitHub Actions (*workflow runs*) de múltiples repositorios públicos, permitiendo crear un dataset para análisis, debugging de pipelines, auditoría de ejecuciones fallidas y más.
+This project allows you to **automatically extract, organize, and store detailed information** about GitHub Actions executions (*workflow runs*) from multiple public repositories. It facilitates the creation of datasets for analysis, pipeline debugging, auditing failed runs, and more.
 
-## ¿Qué hace este software?
+## What does this software do?
 
-El script principal (`script.py`) recorre una lista de repositorios especificados en un archivo `repos.csv` y:
+The main script (`script.py`) iterates through a list of repositories specified in a `repos.csv` file and:
 
-- Extrae hasta `MAX_RUNS` ejecuciones recientes de cada repositorio.
-- Descarga los siguientes elementos de cada ejecución:
-  - Metadata general (`workflow_run.json`)
-  - Detalles de jobs (`jobs.json`)
-  - Archivo YAML del workflow
-  - Logs comprimidos (`logs.zip`)
-- Clasifica cada ejecución en carpetas organizadas según su estado:
-  - Todas las ejecuciones
-  - Solo ejecuciones fallidas
-  - Solo ejecuciones que fueron rerun
+- Extracts up to `MAX_RUNS` recent executions from each repository.
+- Downloads the following elements for each run:
+  - General Metadata (`workflow_run.json`)
+  - Job Details (`jobs.json`)
+  - Workflow YAML file
+  - Compressed Logs (`logs.zip`)
+- Classifies each execution into organized folders based on its status:
+  - All executions
+  - Failed executions only
+  - Rerun executions only
 
-Para mayor detalle, leer documentación en notebook.ipynb.
+For further details, please read the documentation in `notebook.ipynb`.
 
-## Estructura esperada del proyecto
+## Expected Project Structure
 
-```
+```text
 github-actions-workflow-run-data-extractor/
-├── env                      ← Entorno de python
-├── .env                     ← Token de GitHub
-├── .gitignore               ← Gitignore para protección de token
-├── notebook.ipynb           ← Notebook con documentación y ejecución del script
-├── README.md                ← Readme del proyecto
-├── repos.csv                ← Lista de repositorios a analizar
-├── requirements.txt         ← Librerías necesarias
-├── script.py                ← Script principal del software
-├── owner1_repo1/            ← Carpeta por cada repositorio procesado
+├── env                      ← Python environment
+├── .env                     ← GitHub Token
+├── .gitignore               ← Gitignore to protect the token
+├── notebook.ipynb           ← Notebook with documentation and script execution
+├── README.md                ← Project Readme
+├── repos.csv                ← List of repositories to analyze
+├── requirements.txt         ← Required libraries
+├── script.py                ← Main software script
+├── owner1_repo1/            ← Folder for each processed repository
 │   ├── all_workflow_runs/
 │   ├── failure_workflow_runs/
 │   └── retry_workflow_runs/
+
 ```
 
-## Pasos para preparar entorno y ejecutar software
+## Steps to Prepare Environment and Run Software
 
-### 1. Crear, activar entorno virtual y seleccionar kernel
+### 1. Create, activate virtual environment, and select kernel
 
-#### En Windows:
+#### On Windows:
+
 ```bash
 python -m venv env
 env\Scripts\activate
+
 ```
 
-#### En macOS/Linux:
+#### On macOS/Linux:
+
 ```bash
 python3 -m venv env
 source env/bin/activate
+
 ```
 
-#### Seleccionar kernel en notebook.ipynb
+#### Select kernel in `notebook.ipynb`
 
-### 2. Instalar dependencias
+### 2. Install Dependencies
 
-Con el entorno virtual activado, ejecutar:
+With the virtual environment activated, run:
 
 ```bash
 pip install -r requirements.txt
-```
-
-> Esto instalará:
-> - `requests`: Para interactuar con la API de GitHub
-> - `python-dotenv`: Para cargar variables de entorno desde `.env`
-> - `notebook`: Para trabajar con jupyter notebook
-
-### 3. Crear el archivo `.env`
-
-En la raíz del proyecto, crear archivo llamado `.env` con el siguiente contenido:
 
 ```
-GITHUB_TOKEN=token
+
+> This will install:
+> * `requests`: To interact with the GitHub API
+> * `python-dotenv`: To load environment variables from `.env`
+> * `notebook`: To work with Jupyter Notebook
+> 
+> 
+
+### 3. Create the `.env` file
+
+In the project root, create a file named `.env` with the following content:
+
+```ini
+GITHUB_TOKEN=your_token_here
+
 ```
 
-> El token debe tener permisos para leer información pública de los repositorios (permisos de scope `repo`).
+> The token must have permissions to read public repository information (`repo` scope).
 
-### 4. Crear el archivo `.gitignore`
+### 4. Create the `.gitignore` file
 
-En la raíz del proyecto, crear archivo llamado `.gitignore` con el siguiente contenido:
+In the project root, create a file named `.gitignore` with the following content:
 
-```
+```text
 .env
 __pycache__/
 *.pyc
 env/
+
 ```
 
-> Esto asegurará que no se suba ningún contenido sensible a ningún repositorio.
+> This ensures that no sensitive content is uploaded to any repository.
 
-### 5. Verificar o editar `repos.csv`
+### 5. Verify or edit `repos.csv`
 
-El archivo `repos.csv` ya viene con **10 repositorios de ejemplo**, uno por línea en el siguiente formato:
+The `repos.csv` file comes with **10 example repositories**, one per line in the following format:
 
 ```csv
 owner,repo
 vercel,next.js
 ...,...
+
 ```
 
-Es posible **editar este archivo** para agregar o quitar repositorios a procesar, pero no debe ser eliminado, **debe existir** en la raíz del proyecto y seguir el formato `owner,repo`.
+You can **edit this file** to add or remove repositories to process, but it must not be deleted. It **must exist** in the project root and follow the `owner,repo` format.
 
-### 6. Verificar o editar el número de workflow runs que extraeremos por repositorio (`MAX_RUNS`)
+### 6. Verify or edit the number of workflow runs to extract (`MAX_RUNS`)
 
-En el archivo `script.py`, se encuentra una variable al principio:
+In the `script.py` file, you will find a variable at the beginning:
 
 ```python
 MAX_RUNS = 100
+
 ```
 
-Es posible reducirla o aumentarla. En el estado actual, el software extraerá 100 workflow runs por cada uno de los repositorios en repos.csv.
+You can decrease or increase this value. In its current state, the software will extract 100 workflow runs for each of the repositories listed in `repos.csv`.
 
-## ¿Cómo ejecutar el script?
+## How to execute the script?
 
-Abrir el archivo `notebook.ipynb` y ejecutar la celda con:
+Open the `notebook.ipynb` file and execute the cell containing:
 
 ```python
 !python script.py
+
 ```
 
-Esto iniciará la extracción y guardado de data de todos los repositorios listados en `repos.csv`.
+This will start the extraction and data saving process for all repositories listed in `repos.csv`.
