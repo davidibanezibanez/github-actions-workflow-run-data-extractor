@@ -135,3 +135,9 @@ Open the `notebook.ipynb` file and execute the cell containing:
 ```
 
 This will start the extraction and data saving process for all repositories listed in `repos.csv`.
+
+## Contact
+
+David Ibáñez - https://www.linkedin.com/in/davidibanezibanez/
+
+Project Link: [[https://github.com/davidibanezibanez/mlr-devsecops-metrics](https://github.com/davidibanezibanez/github-actions-workflow-run-data-extractor/]([https://www.google.com/search?q=https://github.com/davidibanezibanez/mlr-devsecops-metrics](https://github.com/davidibanezibanez/github-actions-workflow-run-data-extractor/)
