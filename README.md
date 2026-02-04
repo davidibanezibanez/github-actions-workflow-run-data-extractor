@@ -140,4 +140,4 @@ This will start the extraction and data saving process for all repositories list
 
 David Ibáñez - https://www.linkedin.com/in/davidibanezibanez/
 
-Project Link: [[https://github.com/davidibanezibanez/mlr-devsecops-metrics](https://github.com/davidibanezibanez/github-actions-workflow-run-data-extractor/]([https://www.google.com/search?q=https://github.com/davidibanezibanez/mlr-devsecops-metrics](https://github.com/davidibanezibanez/github-actions-workflow-run-data-extractor/)
+Project Link: https://github.com/davidibanezibanez/github-actions-workflow-run-data-extractor
